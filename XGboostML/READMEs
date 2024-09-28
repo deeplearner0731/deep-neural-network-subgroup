@@ -1,1 +1,1 @@
-This folder contains The code for XGBoost with modified loss function (XGboostML) model is an adaptation of the XGBoost algorithm that integrates the A-learning loss function.
+This folder contains the demo code for XGBoost with modified loss function (XGboostML).
