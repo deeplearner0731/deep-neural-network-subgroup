@@ -1,0 +1,1 @@
+This folder contains demo code for causal forest (CF)  It is implemented via R package “grf”, and linear regression with modified outcomes (LRMO) and linear regression with modified covariates (LRMC), both utilizing Lasso regularization.
