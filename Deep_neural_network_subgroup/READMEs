@@ -1,3 +1,7 @@
-This folder contains the demo code for deep learning-based ranking method for subgroup and predictive biomarkers identification (DeepRAB).
-The demo code works for simulation data case I for contious outcomes in the case where pronogstis effect =0 and predictive effects=0.1, usrers feel free to tune the patameters on other dataset with different predictive and progostics effect. 
-in addtion to paper with A-learning loss, we also include the weight-learning loss in the code. 
+This folder contains the demo code for DeepRAB, a deep learning-based ranking method for identifying subgroups and predictive biomarkers.
+
+The demo focuses on Simulation Scenario I for continuous outcomes, specifically for cases where the prognostic effect is set to 0 and the predictive effect is 0.1. Users are encouraged to modify the parameters and apply the method to other datasets with varying predictive and prognostic effects.
+
+In addition to the A-learning loss used in the paper, we have also included an implementation of weight-learning loss in the provided code.
+
+Feel free to explore and experiment with the code on different datasets!
