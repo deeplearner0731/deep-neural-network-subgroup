@@ -3,6 +3,7 @@
 ## Overview
 
 **DeepRAB** is a deep learning-based framework designed for identifying subgroups and predictive biomarkers in precision medicine. 
+
 ## Features
 - **DeepRAB Framework**: Implements the core DeepRAB model for identifying subgroups and predictive biomarkers.
 - **Causal Forest Framework**: Integrates the Causal Forest (CF) model for estimating conditional average treatment effects (CATE) as a comparison.
