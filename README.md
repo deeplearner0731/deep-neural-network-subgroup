@@ -14,11 +14,4 @@
 Ensure you have the following installed:
 
 - Python 3.7+
-- Git
-- [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) (optional but recommended)
 
-### Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/DeepRAB.git
-cd DeepRAB
