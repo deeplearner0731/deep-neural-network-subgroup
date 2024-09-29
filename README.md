@@ -18,7 +18,7 @@ Ensure you have the following installed:
 
 - Python 3.7+
 - R 4.0+
-## Author
+
 
 
 
