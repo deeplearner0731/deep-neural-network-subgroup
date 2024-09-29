@@ -20,8 +20,5 @@ Ensure you have the following installed:
 - R 4.0+
 ## Author
 
-This package is maintained by Zihuan Liu.  For any queries or issues, please contact us at:
-
-- Zihuan Liu: <zihuan.liu@abbvie.com>
 
 
