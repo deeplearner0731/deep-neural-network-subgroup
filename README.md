@@ -18,4 +18,10 @@ Ensure you have the following installed:
 
 - Python 3.7+
 - R 4.0+
+## Author
+
+This package is maintained by Zihuan Liu.  For any queries or issues, please contact us at:
+
+- Zihuan Liu: <zihuan.liu@abbvie.com>
+
 
