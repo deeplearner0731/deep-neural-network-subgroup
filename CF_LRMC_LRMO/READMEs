@@ -5,8 +5,8 @@ Overview
 This folder contains demo code for two baseline models: Causal Forest (CF) and Linear Regression models with modifications for outcomes and covariates. These methods are used for subgroup and predictive biomarker identification.
 
 Implementations Included:
-Causal Forest (CF): Implemented using the R package grf for estimating conditional average treatment effects (CATE).
-Linear Regression with Modified Outcomes (LRMO): Specifically designed for continuous outcome simulations.
-Linear Regression with Modified Covariates (LRMC): Not included in this demo.
+CF: Implemented using the R package grf for estimating conditional average treatment effects (CATE).
+LRMO: Specifically designed for continuous outcome simulations.
+LRMC: Not included in this demo.
 Note:
 The demo code currently includes the implementation of LRMO for continuous outcomes only. For other configurations, users may need to adapt the code accordingly.
