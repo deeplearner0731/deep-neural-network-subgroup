@@ -5,9 +5,47 @@ from keras.layers import Layer, Softmax, Input
 from keras.callbacks import EarlyStopping
 from keras.initializers import Constant, glorot_normal
 from tensorflow.keras.optimizers import Adam
+import tensorflow as tf
 
 class_weight = {0: 1.,
                 1: 50.}
+
+
+
+@tf.custom_gradient
+def dr_loss(y_true, y_pred, trt, pi):
+    """
+    A‑learning style loss with an explicit gradient.
+    Shapes
+    -------
+    y_true : (B, 1)
+    y_pred : (B, 1)
+    trt    : (B,)   or  (B, 1)   (will be flattened)
+    pi     : (B,)   or  (B, 1)
+    """
+    # ---- make sure trt and pi are 1‑D ----
+    trt = tf.reshape(trt, (-1,))
+    pi  = tf.reshape(pi,  (-1,))
+
+    c = (trt + 1.0)/2.0 - pi          # (B,)
+    c = tf.expand_dims(c, -1)         # (B, 1)   ← **rank 2**, not 3
+
+    diff  = y_true - c * y_pred       # (B, 1)
+    value = tf.sqrt(tf.reduce_mean(tf.square(diff)))
+
+    def grad(dy):                     # dy is the upstream scalar
+        g = -c * diff                 # (B, 1)  ← still rank‑2
+        denom = tf.sqrt(tf.reduce_mean(tf.square(diff))) \
+                * tf.cast(tf.size(diff), tf.float32)
+        g = g / denom                 # (B, 1)
+
+        # return grads w.r.t: y_true, y_pred, trt, pi
+        return dy * g, dy * g, None, None
+
+    return value, grad
+
+
+
 class ConcreteSelect(Layer):
     
     def __init__(self, output_dim, start_temp = 10.0, min_temp = 0.1, alpha = 0.99999, **kwargs):
@@ -77,47 +115,22 @@ class ConcreteAutoencoderFeatureSelector():
         self.show=ver
         
     
-    def custom_loss_a(self,trt,pi):
-        
-        def loss(y_true, y_pred):
-            y = K.constant(y_true)
-            len_=K.constant(len(y))
-            c=(trt+K.constant(1.0))/K.constant(2.0)-pi
-            elements = K.square(y-c*y_pred)
-            return K.sqrt(K.sum(elements))/len_
-        
-        def grad (y_true, y_pred):
-            
-            c=(trt+K.constant(1.0))/K.constant(2.0)-pi
-    
-            return -2.0*c*(y_true-y_pred*c)
-            
-            
-        return loss, grad
-    
-    
-    def custom_loss_w(self,trt,pi):
-        def loss(y_true, y_pred):
-            #print(y_pred.shape)
-            #print(y_true.shape)
-            y = K.constant(y_true)
-            
-            len_=K.constant(len(y))
-            
-            c=trt*pi+(1-trt)/2.0
-            
+    def _loss_a(self, trt_full, pi_full):
+        """
+        Returns a closure loss(y_true, y_pred) that captures trt and pi.
+        Assumes rows are fed in the same order as trt_full / pi_full.
+        """
+        trt_const = tf.constant(trt_full.reshape(-1), dtype=tf.float32)
+        pi_const  = tf.constant(pi_full.reshape(-1),  dtype=tf.float32)
 
-            elements = K.square(y-trt*y_pred)/c
+        def loss(y_true, y_pred):
+            bsz = tf.shape(y_true)[0]
+            trt_batch = trt_const[:bsz]
+            pi_batch  = pi_const[:bsz]
+            return dr_loss(y_true, y_pred, trt_batch, pi_batch)
 
-            
-            
-            return K.sqrt(K.sum(elements))/len_
-        
-        
-        
-        
         return loss
-        
+
 
         
         
@@ -156,15 +169,12 @@ class ConcreteAutoencoderFeatureSelector():
         
                 
             #self.model.compile(Adam(self.learning_rate), loss = self.custom_loss(self.trt,self.pi))
-            if self.loss_name=='A':
-                #loss_fn, grad_fn= self.custom_loss_a(self.trt,self.pi)
-                
-                self.model.compile(Adam(self.learning_rate), loss = self.custom_loss_a(self.trt,self.pi), run_eagerly=True)
-                
-            elif self.loss_name=='weight':
-                self.model.compile(Adam(self.learning_rate), loss = self.custom_loss_w(self.trt,self.pi),run_eagerly=True)
-                
-                
+            if self.loss_name == "A":
+                self.model.compile(
+                    optimizer=tf.keras.optimizers.Adam(self.learning_rate),
+                    loss=self._loss_a(self.trt, self.pi),
+                    run_eagerly=False         # eager not needed; keeps it fast
+                )
             stopper_callback = StopperCallback()
 
             hist = self.model.fit(X, Y, self.batch_size, num_epochs, verbose = self.show, callbacks = [stopper_callback], validation_data = validation_data)
