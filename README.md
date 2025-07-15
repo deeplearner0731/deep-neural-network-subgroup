@@ -10,7 +10,8 @@
 - **XGBoost with Modified Loss Function**: A customized version of XGBoost tailored for biomarker identification, incorporating an A-learning loss function.
 - **Linear Regression Models**: Implements linear regression with both modified outcomes and modified covariates.
 
-## Installation
+## Latest Update — July 2025
+We refactored the DeepRAB codebase to eliminate reported bugs.
 
 ### Prerequisites
 
