@@ -11,7 +11,7 @@
 - **Linear Regression Models**: Implements linear regression with both modified outcomes and modified covariates.
 
 ## Latest Update — July 2025
-We refactored the DeepRAB codebase to eliminate reported bugs.
+We’ve refactored the DeepRAB codebase to address previously reported bugs and improve stability. Additionally, we’ve added a demo script for hyperparameter tuning. For demonstration purposes, the script includes only a small set of hyperparameters. Users are encouraged to explore a broader hyperparameter space when running on HPC environments.
 
 ### Prerequisites
 
