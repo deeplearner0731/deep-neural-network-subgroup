@@ -12,6 +12,8 @@
 
 ## Latest Update — July 2025
 We’ve refactored the DeepRAB codebase to address previously reported bugs and improve stability. Additionally, we’ve added a demo script for hyperparameter tuning. For demonstration purposes, the script includes only a small set of hyperparameters. Users are encouraged to explore a broader hyperparameter space when running on HPC environments.
+## Latest Update (01/2026)
+We added demo code demonstrating simple hyperparameter tuning for the continuous case.
 
 ### Prerequisites
 
